@@ -1,14 +1,18 @@
 name: Call Update Webhook
 on:
   workflow_run:
-    workflows: ["Compile and push client image", "Compile and push server image"]
+    workflows:
+      - "Compile and push client image"
+      - "Compile and push server image"
     types:
       - completed
 
 jobs:
   call-webhook:
     runs-on: ubuntu-latest
-    if: github.event.workflow_run.conclusion == 'success'
     steps:
       - name: Call Update Webhook
-        run: curl https://webhook.adleman6.wns.wilders.dev/hooks/update
+        run: |
+          if [ "${{ github.event.workflow_run.conclusion }}" == "success" ]; then
+            curl https://webhook.adleman6.wns.wilders.dev/hooks/update
+          fi
