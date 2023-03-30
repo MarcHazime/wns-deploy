@@ -8,6 +8,7 @@ on:
 jobs:
   call-webhook:
     runs-on: ubuntu-latest
+    if: github.event.workflow_run.conclusion == 'success'
     steps:
       - name: Call Update Webhook
         run: curl https://webhook.adleman6.wns.wilders.dev/hooks/update
